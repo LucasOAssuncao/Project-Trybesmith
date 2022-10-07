@@ -9,8 +9,9 @@ export default class ProductModel {
   }
 
   public async getAll(): Promise<IProduct[]> {
-    const result = await this.connection
-      .execute('SELECT * FROM Trybesmith.Products');
+    const result = await this.connection.execute(
+      'SELECT * FROM Trybesmith.Products',
+    );
     const [rows] = result;
     return rows as IProduct[];
   }
@@ -22,5 +23,14 @@ export default class ProductModel {
     );
     const { insertId } = result;
     return { id: insertId, name, amount };
+  }
+
+  public async update(productId: number, orderId: number): Promise<number> {
+    await this.connection.execute(
+      'UPDATE Trybesmith.Products SET orderId=(?) WHERE id=(?);',
+      [orderId, productId],
+    );
+
+    return productId;
   }
 }

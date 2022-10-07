@@ -31,6 +31,13 @@ class UserModel {
 
     return (result as RowDataPacket[])[0] as IUser;
   }
+
+  public async getById(id: number): Promise<IUser[] | []> {
+    const [user] = await this.connection
+      .execute('SELECT * FROM Trybesmith.Users WHERE id=(?);', [id]);
+
+    return user as IUser[];
+  }
 }
 
 export default UserModel;
